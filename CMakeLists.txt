@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.6)
-project (oglskeleton)
+project (oglapp)
 
 # GLEW
 set(glew-cmake_BUILD_SHARED OFF CACHE BOOL "" FORCE)
@@ -21,7 +21,10 @@ include_directories(lib/glm)
 add_subdirectory(lib/soil)
 include_directories(lib/soil/inc/SOIL)
 
-file(GLOB_RECURSE src_files ${PROJECT_SOURCE_DIR}/src/*)
+file(GLOB_RECURSE src_files
+    ${PROJECT_SOURCE_DIR}/src/*
+    ${PROJECT_SOURCE_DIR}/src/common/*)
+
 add_executable(app ${src_files})
 target_link_libraries(app ${GLFW_LIBRARIES} libglew_static glfw soil)
 
