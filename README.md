@@ -1,10 +1,10 @@
 Clone repository and submodules:
 ```
-git clone https://github.com/konradsz/oglskeleton.git --recursive
+git clone https://github.com/konradsz/oglapp.git --recursive
 ```
 or
 ```
-git clone https://github.com/konradsz/oglskeleton.git
+git clone https://github.com/konradsz/oglapp.git
 git submodule update --init --recursive
 ```
 
