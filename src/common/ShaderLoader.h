@@ -17,8 +17,8 @@ public:
 
 private:
     std::string readFromFile(const std::string& fileName);
-    GLuint createShader(GLenum shaderType, const std::string& source);
+    GLuint compile(GLenum type, const std::string& source);
 
 private:
-    GLuint programId;
+    GLuint m_programId;
 };
