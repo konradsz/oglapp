@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -40,8 +41,21 @@ int main()
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
 
+    double lastTime = glfwGetTime();
+    int fps = 0;
+
     while (!glfwWindowShouldClose(window))
     {
+        double currentTime = glfwGetTime();
+        ++fps;
+        if (currentTime - lastTime >= 1.0)
+        {
+            std::string title = std::to_string(fps) + " FPS";
+            glfwSetWindowTitle(window, title.c_str());
+            fps = 0;
+            lastTime = glfwGetTime();
+        }
+
         glfwPollEvents();
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
