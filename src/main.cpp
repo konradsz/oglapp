@@ -102,8 +102,8 @@ int main()
     // Build and compile our shader program
     common::ShaderManager program;// ("path/to/shaders/shader.vs", "path/to/shaders/shader.frag");
     //program.createProgram("vertex.vert", "fragment.frag");
-    program.createShader("object", "../src/shaders/vertex.vert", "../src/shaders/fragment.frag");
-    program.createShader("light", "../src/shaders/vertex.vert", "../src/shaders/light.frag");
+    program.createShader("object", "resources/shaders/vertex.vert", "resources/shaders/fragment.frag");
+    program.createShader("light", "resources/shaders/vertex.vert", "resources/shaders/light.frag");
 
     // Set up vertex data (and buffer(s)) and attribute pointers
     GLfloat vertices[] = {
@@ -188,7 +188,7 @@ int main()
     int width, height;
     unsigned char* image;
     // Diffuse map
-    image = SOIL_load_image("../container2.png", &width, &height, 0, SOIL_LOAD_RGB);
+    image = SOIL_load_image("resources/textures/container2.png", &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, diffuseMap);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -203,7 +203,7 @@ int main()
     GLuint specularMap;
     glGenTextures(1, &specularMap);
     unsigned char* image2;
-    image2 = SOIL_load_image("../container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
+    image2 = SOIL_load_image("resources/textures/container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
     //image2 = SOIL_load_image("../specular_black.png", &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, specularMap);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
