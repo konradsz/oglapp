@@ -6,6 +6,10 @@
 using dummy::common::Camera;
 
 Camera::Camera(const glm::vec3& position, GLfloat pitch, GLfloat yaw) :
+    m_fov(glm::radians(45.0f)),
+    m_aspectRatio((float) 800 / (float) 600),
+    m_nearPlane(0.1f),
+    m_farPlane(100.0f),
     m_position(position),
     m_yaw(yaw),
     m_pitch(pitch)
@@ -43,6 +47,11 @@ void Camera::pitch(GLfloat angle)
 glm::mat4 Camera::getViewMatrix() const
 {
     return glm::lookAt(m_position, m_position + m_direction, m_up);
+}
+
+glm::mat4 Camera::getProjectionMatrix() const
+{
+    return glm::perspective(m_fov, m_aspectRatio, m_nearPlane, m_farPlane);
 }
 
 glm::vec3 Camera::getPosition() const

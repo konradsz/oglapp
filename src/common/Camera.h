@@ -17,6 +17,7 @@ namespace dummy
             void pitch(GLfloat angle);
 
             glm::mat4 getViewMatrix() const;
+            glm::mat4 getProjectionMatrix() const;
             glm::vec3 getPosition() const;
             glm::vec3 getDirection() const;
             glm::vec3 getRight() const;
@@ -25,6 +26,11 @@ namespace dummy
             void updateDirection();
 
         private:
+            float m_fov;
+            float m_aspectRatio;
+            float m_nearPlane;
+            float m_farPlane;
+
             glm::vec3 m_position;
             glm::vec3 m_direction;
             glm::vec3 m_up;
