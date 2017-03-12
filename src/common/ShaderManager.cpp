@@ -5,8 +5,8 @@
 #include <vector>
 #include <algorithm>
 
-using common::ShaderManager;
-using common::Shader;
+using dummy::common::ShaderManager;
+using dummy::common::Shader;
 
 void ShaderManager::createShader(const std::string& shaderName,
                                  const std::string& vertexShaderPath,

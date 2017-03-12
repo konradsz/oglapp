@@ -3,7 +3,7 @@
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 
-using common::Camera;
+using dummy::common::Camera;
 
 Camera::Camera(const glm::vec3& position, GLfloat pitch, GLfloat yaw) :
     m_position(position),

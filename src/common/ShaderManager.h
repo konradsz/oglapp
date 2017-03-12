@@ -7,21 +7,24 @@
 
 #include "Shader.h"
 
-namespace common
+namespace dummy
 {
-    class ShaderManager
+    namespace common
     {
-    public:
-        ShaderManager() = default;
-        ~ShaderManager();
+        class ShaderManager
+        {
+        public:
+            ShaderManager() = default;
+            ~ShaderManager();
 
-        void createShader(const std::string& shaderName,
-                          const std::string& vertexShaderPath,
-                          const std::string& fragmentShaderPath);
+            void createShader(const std::string& shaderName,
+                const std::string& vertexShaderPath,
+                const std::string& fragmentShaderPath);
 
-        Shader getShader(const std::string& shaderName) const;
+            Shader getShader(const std::string& shaderName) const;
 
-    private:
-        std::map<std::string, Shader> m_shaders;
-    };
+        private:
+            std::map<std::string, Shader> m_shaders;
+        };
+    }
 }

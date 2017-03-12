@@ -1,7 +1,7 @@
 #include "CameraOperator.h"
 #include "Camera.h"
 
-using namespace common;
+using namespace dummy::common;
 
 CameraOperator::CameraOperator(const std::shared_ptr<Camera>& camera, GLfloat movementSpeed, GLfloat mouseSensivity) :
     m_camera(camera),

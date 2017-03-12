@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 
-using common::Shader;
+using dummy::common::Shader;
 
 Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
 {

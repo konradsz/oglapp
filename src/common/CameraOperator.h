@@ -3,32 +3,35 @@
 #include <memory>
 #include <GL/glew.h>
 
-namespace common
+namespace dummy
 {
-    enum class Direction
+    namespace common
     {
-        Forward,
-        Backward,
-        Left,
-        Right
-    };
+        enum class Direction
+        {
+            Forward,
+            Backward,
+            Left,
+            Right
+        };
 
-    class Camera;
+        class Camera;
 
-    class CameraOperator
-    {
-    public:
-        CameraOperator(const std::shared_ptr<Camera>& camera, GLfloat movementSpeed, GLfloat mouseSensivity);
+        class CameraOperator
+        {
+        public:
+            CameraOperator(const std::shared_ptr<Camera>& camera, GLfloat movementSpeed, GLfloat mouseSensivity);
 
-        void processKeyboard(Direction direction, GLfloat deltaTime);
-        void processMouse(GLfloat xOffset, GLfloat yOffset);
+            void processKeyboard(Direction direction, GLfloat deltaTime);
+            void processMouse(GLfloat xOffset, GLfloat yOffset);
 
-        void setMovementSpeed(GLfloat speed);
-        void setMouseSensivity(GLfloat sensivity);
+            void setMovementSpeed(GLfloat speed);
+            void setMouseSensivity(GLfloat sensivity);
 
-    private:
-        std::shared_ptr<Camera> m_camera;
-        GLfloat m_movementSpeed;
-        GLfloat m_mouseSensivity;
-    };
+        private:
+            std::shared_ptr<Camera> m_camera;
+            GLfloat m_movementSpeed;
+            GLfloat m_mouseSensivity;
+        };
+    }
 }
