@@ -26,7 +26,8 @@ include_directories(lib/soil/inc/SOIL)
 
 file(GLOB src_files
     ${PROJECT_SOURCE_DIR}/src/*
-    ${PROJECT_SOURCE_DIR}/src/common/*)
+    ${PROJECT_SOURCE_DIR}/src/common/*
+    ${PROJECT_SOURCE_DIR}/src/rendering/*)
 
 add_executable(app ${src_files})
 target_link_libraries(app ${GLFW_LIBRARIES} libglew_static glfw soil)
