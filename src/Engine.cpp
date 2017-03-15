@@ -24,12 +24,6 @@ dummy::common::CameraOperator cameraOperator(camera, 4.0f, 0.05f);
 
 GLfloat deltaTime = 0.0f;
 
-
-
-GLuint diffuseMap;
-GLuint specularMap;
-GLuint VBO, VAO;
-
 bool keys[1024];
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -65,7 +59,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 namespace dummy
 {
     Engine::Engine() :
-        m_renderer(WIDTH, HEIGHT)
+        m_renderer(std::make_shared<rendering::Renderer>(WIDTH, HEIGHT)),
+        m_scene(m_renderer)
     {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -99,102 +94,8 @@ namespace dummy
         glViewport(0, 0, width, height);
         glEnable(GL_DEPTH_TEST);
 
-        m_renderer.initShaders();
-
-        // Set up vertex data (and buffer(s)) and attribute pointers
-        GLfloat vertices[] = {
-            // Positions           // Normals           // Texture Coords
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-        };
-
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        glBindVertexArray(VAO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        // Position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
-        glEnableVertexAttribArray(0);
-        // Normal attribute
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(1);
-        // Texture attribute
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(2);
-        glBindVertexArray(0);
-
-        glGenTextures(1, &diffuseMap);
-        int widthxxx, heightxxx;
-        unsigned char* image;
-        // Diffuse map
-        image = SOIL_load_image("../resources/textures/container2.png", &widthxxx, &heightxxx, 0, SOIL_LOAD_RGB);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthxxx, heightxxx, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        SOIL_free_image_data(image);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        // Specular map
-        glGenTextures(1, &specularMap);
-        unsigned char* image2;
-        image2 = SOIL_load_image("../resources/textures/container2_specular.png", &widthxxx, &heightxxx, 0, SOIL_LOAD_RGB);
-        //image2 = SOIL_load_image("../specular_black.png", &width, &height, 0, SOIL_LOAD_RGB);
-        glBindTexture(GL_TEXTURE_2D, specularMap);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthxxx, heightxxx, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        SOIL_free_image_data(image2);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        m_renderer->initShaders();
+        m_renderer->loadTextures();
 
         std::vector<rendering::Vertex> cube = {
             // Positions             // Normals       // Texture Coords
@@ -241,16 +142,14 @@ namespace dummy
             { { -0.5f,  0.5f, -0.5f },{ 0.0f,  1.0f,  0.0f },{ 0.0f, 1.0f } }
         };
         auto mesh = std::make_unique<rendering::Mesh>(cube);
-        m_renderer.addMesh(std::move(mesh), "light");
-        m_renderer.setCamera(camera);
+        m_renderer->addMesh(std::move(mesh), "object");
+        m_scene.addObject({ rendering::Mesh(cube), { 0.0f, 0.0f, 0.0f }, 1.0f , false });
+        m_scene.addObject({ rendering::Mesh(cube), { 1.2f, 1.0f, 2.0f }, 0.05f , true });
+        m_renderer->setCamera(camera);
     }
 
     Engine::~Engine()
     {
-        // Properly de-allocate all resources once they've outlived their purpose
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
-        // Terminate GLFW, clearing any resources allocated by GLFW.
         glfwTerminate();
     }
 
@@ -272,9 +171,7 @@ namespace dummy
 
             while (lag >= timeStep)
             {
-                //std::cout << "Elo" << std::endl;
                 lag -= timeStep;
-
             }
 
             render();
@@ -313,42 +210,7 @@ namespace dummy
 
     void Engine::render()
     {
-        /*auto id = program.getShader("object").id();
-        program.getShader("object").use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
-        glUniform1i(glGetUniformLocation(id, "material.diffuse"), 0);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularMap);
-        glUniform1i(glGetUniformLocation(id, "material.specular"), 1);
-        glUseProgram(id);
-
-        auto camPos = camera->getPosition();
-        glUniform3f(glGetUniformLocation(id, "viewPos"), camPos.x, camPos.y, camPos.z);
-
-
-
-        glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(glGetUniformLocation(id, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(glGetUniformLocation(id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-        glUniform3f(glGetUniformLocation(id, "light.ambient"), 0.2f, 0.2f, 0.2f);
-        glUniform3f(glGetUniformLocation(id, "light.diffuse"), 0.5f, 0.5f, 0.5f);
-        glUniform3f(glGetUniformLocation(id, "light.specular"), 1.0f, 1.0f, 1.0f);
-        glUniform3f(glGetUniformLocation(id, "light.lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
-        glUniform1f(glGetUniformLocation(id, "material.shininess"), 32.0f);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularMap);
-
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);*/
-
-        m_renderer.render();
+        m_scene.draw();
 
         // Swap the screen buffers
         glfwSwapBuffers(m_window);

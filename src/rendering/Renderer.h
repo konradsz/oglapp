@@ -5,6 +5,7 @@
 
 #include "../common/ShaderManager.h"
 #include "../common/Camera.h"
+#include "Object.h"
 #include "Mesh.h"
 
 namespace dummy
@@ -22,8 +23,10 @@ namespace dummy
         public:
             Renderer(int windowWidth, int windowHeight);
             void initShaders();
+            void loadTextures();
 
-            void render();
+            void clearScene() const;
+            void render(const Object& object);
             void addMesh(std::unique_ptr<Mesh> mesh, const std::string& shader);
 
             //TU POWINIEN BYC WEAK_PTR
@@ -38,6 +41,9 @@ namespace dummy
             std::shared_ptr<common::Camera> m_camera;
             //std::vector<std::unique_ptr<Mesh>> m_meshes;
             std::vector<BundledMesh> m_meshes;
+
+            GLuint diffuseMap;
+            GLuint specularMap;
         };
     }
 }

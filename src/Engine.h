@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include "common/ShaderManager.h"
 #include "rendering/Renderer.h"
+#include "rendering/Scene.h"
 
 namespace dummy
 {
@@ -25,7 +26,8 @@ namespace dummy
     private:
         GLFWwindow* m_window;
 
-        rendering::Renderer m_renderer;
+        std::shared_ptr<rendering::Renderer> m_renderer; // unique_ptr moze?
+        rendering::Scene m_scene;
 
     };
 }

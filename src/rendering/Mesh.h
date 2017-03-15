@@ -15,10 +15,13 @@ namespace dummy
         {
         public:
             Mesh(const std::vector<Vertex>& vertices);
+            ~Mesh();
+
             void draw();
 
         private:
-            std::vector<Vertex> m_vertices;
+            //std::vector<Vertex> m_vertices;
+            GLsizei m_numberOfVertices;
 
             GLuint m_vao;
             GLuint m_vbo;
