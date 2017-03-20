@@ -101,7 +101,9 @@ void Renderer::render(const Object& object)
         glUniform3f(glGetUniformLocation(id, "light.ambient"), 0.2f, 0.2f, 0.2f);
         glUniform3f(glGetUniformLocation(id, "light.diffuse"), 0.5f, 0.5f, 0.5f);
         glUniform3f(glGetUniformLocation(id, "light.specular"), 1.0f, 1.0f, 1.0f);
-        glUniform3f(glGetUniformLocation(id, "light.lightPos"), lightPos.x, lightPos.y, lightPos.z);
+        
+        glUniform3f(glGetUniformLocation(id, "light.direction"), -0.2f, -1.0f, -0.3f);
+        //glUniform3f(glGetUniformLocation(id, "light.lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
         glUniform1f(glGetUniformLocation(id, "material.shininess"), 32.0f);
 

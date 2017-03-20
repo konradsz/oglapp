@@ -19,6 +19,11 @@ Object::Object(Mesh mesh, glm::vec3 position, float scale, bool oneColor) :
 {
 }
 
+void Object::rotate(const glm::vec3& axis, float angle)
+{
+    m_rotation *= glm::rotate(m_rotation, glm::radians(angle), axis);
+}
+
 Mesh Object::getMesh() const
 {
     return m_mesh;
@@ -39,6 +44,7 @@ glm::mat4 Object::getTransformation() const
     auto transformation = glm::mat4();
     transformation = glm::translate(transformation, m_position);
     transformation = glm::scale(transformation, glm::vec3(m_scale));
+    transformation *= m_rotation;
 
     return transformation;
 }
