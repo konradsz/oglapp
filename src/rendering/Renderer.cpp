@@ -28,12 +28,12 @@ void Renderer::initShaders()
 void Renderer::loadTextures()
 {
     glGenTextures(1, &diffuseMap);
-    int widthxxx, heightxxx;
+    int width, height;
     unsigned char* image;
     // Diffuse map
-    image = SOIL_load_image("../resources/textures/container2.png", &widthxxx, &heightxxx, 0, SOIL_LOAD_RGB);
+    image = SOIL_load_image("../resources/textures/container2.png", &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, diffuseMap);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthxxx, heightxxx, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
     SOIL_free_image_data(image);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -44,13 +44,11 @@ void Renderer::loadTextures()
 
     // Specular map
     glGenTextures(1, &specularMap);
-    unsigned char* image2;
-    image2 = SOIL_load_image("../resources/textures/container2_specular.png", &widthxxx, &heightxxx, 0, SOIL_LOAD_RGB);
-    //image2 = SOIL_load_image("../specular_black.png", &width, &height, 0, SOIL_LOAD_RGB);
+    image = SOIL_load_image("../resources/textures/container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, specularMap);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthxxx, heightxxx, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
-    SOIL_free_image_data(image2);
+    SOIL_free_image_data(image);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -74,15 +72,17 @@ void Renderer::render(const Object& object)
 
     if (object.oneColor())
     {
-        id = m_shaderManager.getShader("light").id();
-        m_shaderManager.getShader("light").use(); // czy use nie moze zwracac referencji do shadera (chainning)    
+        auto shader = m_shaderManager.getShader("light");
+        id = shader.id();
+        shader.use();
     }
     else
     {
         glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
-        id = m_shaderManager.getShader("object").id();
-        m_shaderManager.getShader("object").use(); // czy use nie moze zwracac referencji do shadera (chainning)
+        auto shader = m_shaderManager.getShader("object");
+        id = shader.id();
+        shader.use();
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
@@ -116,11 +116,6 @@ void Renderer::render(const Object& object)
     glUniformMatrix4fv(glGetUniformLocation(id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     object.getMesh().draw();
-}
-
-void Renderer::addMesh(std::unique_ptr<Mesh> mesh, const std::string& shader)
-{
-    m_meshes.push_back({ std::move(mesh), shader });
 }
 
 void Renderer::setCamera(std::shared_ptr<Camera> camera)

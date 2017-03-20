@@ -141,10 +141,16 @@ namespace dummy
             { { -0.5f,  0.5f,  0.5f },{ 0.0f,  1.0f,  0.0f },{ 0.0f, 0.0f } },
             { { -0.5f,  0.5f, -0.5f },{ 0.0f,  1.0f,  0.0f },{ 0.0f, 1.0f } }
         };
-        auto mesh = std::make_unique<rendering::Mesh>(cube);
-        m_renderer->addMesh(std::move(mesh), "object");
+
         m_scene.addObject({ rendering::Mesh(cube), { 0.0f, 0.0f, 0.0f }, 1.0f , false });
+        m_scene.addObject({ rendering::Mesh(cube),{ 1.0f, 0.0f, 0.0f }, 1.0f , false });
+        m_scene.addObject({ rendering::Mesh(cube),{ -1.0f, 0.0f, 0.0f }, 1.0f , false });
+        m_scene.addObject({ rendering::Mesh(cube),{ 0.0f, -1.0f, 1.0f }, 1.0f , false });
+        m_scene.addObject({ rendering::Mesh(cube),{ 1.0f, -1.0f, 1.0f }, 1.0f , false });
+        m_scene.addObject({ rendering::Mesh(cube),{ -1.0f, -1.0f, 1.0f }, 1.0f , false });
+
         m_scene.addObject({ rendering::Mesh(cube), { 1.2f, 1.0f, 2.0f }, 0.05f , true });
+
         m_renderer->setCamera(camera);
     }
 

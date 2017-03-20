@@ -27,7 +27,6 @@ namespace dummy
 
             void clearScene() const;
             void render(const Object& object);
-            void addMesh(std::unique_ptr<Mesh> mesh, const std::string& shader);
 
             //TU POWINIEN BYC WEAK_PTR
             void setCamera(std::shared_ptr<common::Camera> camera);
