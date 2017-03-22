@@ -24,10 +24,14 @@ include_directories(lib/glm)
 add_subdirectory(lib/soil)
 include_directories(lib/soil/inc/SOIL)
 
+# ASSIMP
+add_subdirectory(lib/assimp)
+include_directories(lib/assimp/include)
+
 file(GLOB src_files
     ${PROJECT_SOURCE_DIR}/src/*
     ${PROJECT_SOURCE_DIR}/src/common/*
     ${PROJECT_SOURCE_DIR}/src/rendering/*)
 
 add_executable(app ${src_files})
-target_link_libraries(app ${GLFW_LIBRARIES} libglew_static glfw soil)
+target_link_libraries(app ${GLFW_LIBRARIES} libglew_static glfw soil assimp)

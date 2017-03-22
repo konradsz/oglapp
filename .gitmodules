@@ -10,3 +10,6 @@
 [submodule "lib/soil"]
 	path = lib/soil
 	url = https://github.com/paralin/soil
+[submodule "lib/assimp"]
+	path = lib/assimp
+	url = https://github.com/assimp/assimp.git
