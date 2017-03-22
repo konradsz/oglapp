@@ -170,7 +170,16 @@ namespace dummy
         m_scene.addObject({ rendering::Mesh(cube),{ 1.0f, -1.0f, 1.0f }, 1.0f , false });
         m_scene.addObject({ rendering::Mesh(cube),{ -1.0f, -1.0f, 1.0f }, 1.0f , false });*/
 
-        //m_scene.addObject({ rendering::Mesh(cube), { 1.2f, 1.0f, 2.0f }, 0.05f , true });
+        glm::vec3 pointLightPositions[] = {
+            glm::vec3(0.7f, 0.2f, 2.0f),
+            glm::vec3(2.3f, -3.3f, -4.0f),
+            glm::vec3(-4.0f, 2.0f, -12.0f),
+            glm::vec3(0.0f, 0.0f, -3.0f)
+        };
+        for (auto light : pointLightPositions)
+        {
+            m_scene.addObject({ rendering::Mesh(cube), light, 0.2f , true });
+        }
 
         m_renderer->setCamera(camera);
     }
